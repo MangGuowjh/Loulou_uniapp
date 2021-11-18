@@ -8,15 +8,14 @@
 			<view class="header-search" style="margin-top: -95rpx; margin-left: 70rpx;">
 				<text class="app-name">楼楼商城</text>
 				<image src="../../static/index/search.png" style="width: 55rpx; height: 55rpx;"></image>
-				<text class="search-title" @click="gotoList">山河无恙，人间皆安</text>
+				<text class="search-title" @click="gotoList">全场50元起</text>
 			</view>
 			<view style="margin-top: -88rpx;">
-				<navigator class="login" target="text" url="../cart/cart" v-if="!isLogin">
-					登录
-				</navigator>
-				<navigator class="login" tagget="text" url="../user/user" v-else>
-					<!-- <icon name="manager-o" /> -->
-				</navigator>
+				<router-link class="login" tag="span" to="pages/user/login" v-if="!loginStatus">登录</router-link>
+				<router-link class="login" tag="span" to="pages/user/user" v-else>
+				    <!-- <van-icon name="manager-o" /> -->
+					<image src="../../static/bar/ac-user.png" class="user"></image>
+				</router-link>
 			</view>
 		</view> 
 		<!-- 轮播图 -->
@@ -93,8 +92,8 @@
 		<view class="good">
 		    <header class="good-header">新品上线</header>
 		    <view class="good-box">
-		        <view class="good-item" v-for="item in newGoodses" :key="item.goodsId" @click="goToDetail(item)">
-		            <img :src="`//lmall.xinfeng.site${item.goodsCoverImg}`" />
+		        <view class="good-item" v-for="(item, index) in newGoodses" :key="index" @click="goToDetail(item)">
+		            <img :src="`//10.20.28.241:1314${item.goodsCoverImg}`" />
 		            <view class="good-info">
 		                <p class="name">{{item.goodsName}}</p>
 		                <p class="subtitle">{{item.goodsIntro}}</p>
@@ -106,8 +105,8 @@
 		<view class="good">
 		    <header class="good-header">热门商品</header>
 		    <view class="good-box">
-		      <view class="good-item" v-for="item in hots" :key="item.goodsId" @click="goToDetail(item)">
-		        <img :src="`//lmall.xinfeng.site${item.goodsCoverImg}`" />
+		      <view class="good-item" v-for="(item, index) in hots" :key="'info1-' + index" @click="goToDetail(item)">
+		        <img :src="`//10.20.28.241:1314${item.goodsCoverImg}`" />
 		        <view class="good-info">
 		          <p class="name">{{item.goodsName}}</p>
 		          <p class="subtitle">{{item.goodsIntro}}</p>
@@ -119,16 +118,16 @@
 		<view class="good" :style="{ paddingBottom: '100px'}">
 		    <header class="good-header">最新推荐</header>
 		    <view class="good-box">
-		      <view class="good-item" v-for="item in recommends" :key="item.goodsId" @click="goToDetail(item)">
-		        <img :src="`//lmall.xinfeng.site${item.goodsCoverImg}`" />
+		      <view class="good-item" v-for="(item, index) in recommends" :key="'info2-' + index" @click="goToDetail(item)">
+		        <img :src="`//10.20.28.241:1314${item.goodsCoverImg}`" />
 		        <view class="good-info">
 		          <p class="name">{{item.goodsName}}</p>
 		          <p class="subtitle">{{item.goodsIntro}}</p>
 		          <span class="price">￥ {{item.sellingPrice}}</span>
 		        </view>
 		      </view>
-		      <div class="good-item" v-for="item in recommends" :key="item.goodsId" @click="goToDetail(item)">
-		        <img :src="`//lmall.xinfeng.site${item.goodsCoverImg}`" alt="">
+		      <div class="good-item" v-for="(item, index) in recommends" :key="'info3-' + index" @click="goToDetail(item)">
+		        <img :src="`//10.20.28.241:1314${item.goodsCoverImg}`" alt="">
 		        <div class="good-desc">
 		          <div class="title">{{ item.goodsName }}</div>
 		          <div class="price">¥ {{ item.sellingPrice }}</div>
@@ -140,31 +139,58 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex';
+	import { getHome } from '../../api/home.js'
+	import { getUserInfo } from '../../api/user.js'
 	export default {
 		data() {
 			return {
-				isLogin: false,
 				headerScroll: false,
 				hots: [],
 				newGoodses: [],
 				recommends: [],
 			}
 		},
-		onLoad() {
-
+		computed:{
+			...mapState({
+				loginStatus: state => state.loginStatus,
+				token: state => state.a
+			})
 		},
+		onShow() {
+			console.log(this.loginStatus)
+			this.getHomeData()
+		},
+
 		methods: {
 			gotoCategory() {
 				uni.switchTab({
-					url:"../category/category"
+					url:"pages/category/category"
 				})
 			},
 			gotoList() {
 				uni.navigateTo({
 					url:"./product-list"
 				})
-			}
-		}
+			},
+			pageScroll() {
+			    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+			    scrollTop > 100 ? this.headerScroll = true : this.headerScroll = false
+			},
+			goToDetail(item) {
+			    // this.$router.push({ path: `product/${item.goodsId}` })
+				uni.navigateTo({
+					url: "/pages/cart/product_detail?goodsId=" + item.goodsId
+				})
+			},
+			getHomeData() {
+				getHome().then(res => {
+					this.newGoodses = res.data.newGoodses;
+					this.hots = res.data.hotGoodses;
+					this.recommends = res.data.recommendGoodses;
+				})
+			},
+		},
 	}
 </script>
 
@@ -172,6 +198,7 @@
 @import '../../common/style/mixin';
 .home-header {
     position: fixed;
+	flex-direction: column;
     left: 0;
     top: 0;
     line-height: 50px;
@@ -179,7 +206,7 @@
     font-size: 15px;
     color: #fff;
     z-index: 10000;
-	margin-top: 60rpx;
+	// margin-top: 60rpx;
 }
 .header-search {
     display: flex;
@@ -205,9 +232,10 @@
     color:  #c40000;
 	margin-left: 620rpx;
 }
-.van-icon-manager-o {
-    font-size: 20px;
-    vertical-align: -3px;
+.user {
+	height: 40rpx;
+	width: 40rpx;
+	// margin-left: 620rpx;
 }
 .img {
 	height: 90rpx;
@@ -220,7 +248,7 @@
 .swiper {
 	margin-left: 15rpx;
 	border-radius: 10rpx;
-	margin-top: 160rpx;
+	margin-top: 100rpx;
 	height: 300rpx;
 	width: 95%;
 }

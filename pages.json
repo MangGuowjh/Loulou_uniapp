@@ -11,7 +11,8 @@
             "path" : "pages/user/user",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "我的"
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
             }
             
         }
@@ -19,7 +20,8 @@
             "path" : "pages/cart/cart",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "购物车"
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
             }
             
         }
@@ -40,6 +42,86 @@
                 "navigationStyle":"custom"
             }
             
+        }
+        ,{
+            "path" : "pages/user/address/address",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/address/address_edit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/cart/order/create_order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/cart/order/order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/cart/detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/cart/product_detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/setting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/user/about",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "navigationStyle":"custom"
+            }
         }
     ],
 	"globalStyle": {
